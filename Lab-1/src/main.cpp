@@ -1,6 +1,10 @@
-#include <iostream>
 #include "parser.h"
+#include "generator.h"
+
 int main(int argc, char** argv) {
-  int count = Parser::parse_variables_count();
+  std::vector<std::string> vartypes = Parser::parse_variable_types(Parser::parse_variables_count());
+  auto gen = Generator();
+  gen.parse_operations("../src/operations.txt");
+  gen.print_operations();
   return 0;
 }

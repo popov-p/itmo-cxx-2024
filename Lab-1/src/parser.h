@@ -1,12 +1,14 @@
 #ifndef PARSER_H
 #define PARSER_H
+
 #include <iostream>
+#include <vector>
+#include <set>
 
 class Parser {
 public:
   Parser() = delete;
   static int parse_variables_count() {
-
     std::string input;
     int count;
 
@@ -28,6 +30,33 @@ public:
         std::cerr << "Ошибка: Число выходит за допустимый диапазон." << std::endl;
       }
     }
+  }
+
+  static std::vector<std::string> parse_variable_types(int count) {
+    std::set<std::string> allowed_types = {"int", "float", "double", "long int"};
+    std::vector<std::string> types;
+    std::string input;
+
+    for (int i = 1; i <= count; ++i) {
+      while (true) {
+        std::cout << "Введите тип переменной #" << i << " (доступные: int, float, double, long int): ";
+        std::getline(std::cin, input);
+        if (allowed_types.find(input) != allowed_types.end()) {
+          types.push_back(input);
+          break;
+        } else {
+          std::cerr << "Ошибка: Недопустимый тип данных. Повторите ввод." << std::endl;
+        }
+      }
+    }
+
+      std::cout << "Выбранные типы переменных: ";
+      for (const auto& type : types) {
+          std::cout << type << " ";
+      }
+      std::cout << std::endl;
+
+      return types;
   }
 };
 #endif

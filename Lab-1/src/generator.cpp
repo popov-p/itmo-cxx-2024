@@ -35,8 +35,8 @@ void Generator::generate(const std::vector<std::string>& vartypes, const std::st
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    UIDis udis(0, 100);
-    URDis urealdis(0, 100);
+    UIDis udis(1, 100);
+    URDis urealdis(1, 100);
 
     auto choose_random = [&](const auto& what) {
         UIDis dist(0, what.size() - 1);

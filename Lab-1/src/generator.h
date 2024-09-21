@@ -6,7 +6,7 @@
 #include <random>
 
 using UIDis = std::uniform_int_distribution<>;
-using URDis = std::uniform_int_distribution<>;
+using URDis = std::uniform_real_distribution<>;
 
 class Generator {
 public:

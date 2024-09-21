@@ -6,6 +6,6 @@ int main(int argc, char** argv) {
     auto gen = Generator();
     gen.parse_operations("../src/operations.txt");
     gen.print_operations();
-    gen.generate(vartypes, "../src/f.cpp", 10);
+    gen.generate(vartypes, "../src/f.cpp", 3);
     return 0;
 }

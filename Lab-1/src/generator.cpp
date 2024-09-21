@@ -54,14 +54,14 @@ void Generator::generate(const std::vector<std::string>& vartypes, const std::st
         if((vartype_i == "int") || (vartype_i == "long int")) {
             file << udis(rd) <<";\n";
         }
-        else {
+        else {            
             file << urealdis(rd) <<";\n";
         }
     }
 
     for (int i = 0; i < exprnum; i++) {
         std::stringstream expr;
-        URDis dist(0, vartypes.size() - 1);
+        UIDis dist(0, vartypes.size() - 1);
         for (int j = 0; j < vartypes.size() - 1; j++) {
             expr << std::format(" var_{}", dist(gen));
             expr << " " << choose_random(ops);

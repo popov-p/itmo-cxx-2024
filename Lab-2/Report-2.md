@@ -1,4 +1,4 @@
-# Лабораторная работа №1
+# Лабораторная работа №2
 **Дисциплина:** Программирование на С++  
 **Тема:** Работа с памятью. Работа с конструкторами/деструктором языка C++. Перегрузка операторов.   
 **Выполнил:** Попов П.С.  
@@ -15,60 +15,8 @@
     - продемонстрировать работу с разработанным классом, создавая вектора и списки экземпляров класса, используя стандартные классы vector и list длиной от 5 до 10.
 
 ## Структура программы
-Имеется класс `Number`. Ниже приведено содержимое заголовочного файла (в целях экономии места в отчёте) `Number.h`.
-```cpp
-class Number {
-public:
-    Number();
-    Number(int val, const char* input);
-    Number(const Number& other);
-    Number& operator=(const Number& other) {
-        std::cout << "Assignment operator (copy)" << std::endl;
-        if (this == &other) {
-            return *this;
-        }
-
-        value = other.value;
-
-        delete[] text;
-        text = new char[std::strlen(other.text) + 1];
-        std::strcpy(text, other.text); //NOLINT
-
-        return *this;
-    }
-    Number(Number&& other) noexcept : value(other.value), text(other.text) {
-        std::cout << "Move constructor" << std::endl;
-        other.text = nullptr;
-    }
-    Number& operator=(Number&& other) noexcept {
-        std::cout << "Assignment operator (move)" << std::endl;
-        if (this == &other) {
-            return *this;
-        }
-
-        value = other.value;
-
-        delete[] text;
-
-        text = other.text;
-        other.text = nullptr;
-
-        return *this;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Number& number);
-    friend std::ostream& operator<<(std::ostream& os, Number&& number);
-
-
-    ~Number();
-    void print() const;
-private:
-    int value;
-    char* text;
-
-};
-```
-
+`number.cpp` `number.h` - разработанный класс `Number` по заданию.
+`test.cpp`, `test.h` - файлы с "тестовыми" функциями (примерам работы с разработанным классом).
 ## Пример работы программы
 ```
 [pavel@pavel-lt build]$ ./Lab-2 
@@ -217,7 +165,7 @@ Destructor
 ```
 ## Комментарии к результату.
 0. В целом, для меня механика работы конструкторов, деструктора и операторов понятна.
-1. Деструкторы вызываются в порядке обратном объявлению переменных.
+1. Деструкторы вызываются в порядке обратном определению переменных.
 2. Интересно отметить участок кода программы, создающий c++ контейнер вектор переменных типа `Number`.
     - Вектор - это динамический массив с автоматическим менеджментом памяти.
     - Внутри вектора реализована такая механика: если контейнер заполнен до некоторого пороговоро значения (доподлинно неизвестно, какое, вроде бы 60%), то вызывается переаллокация всего содержимого вектора на размер (насколько я знаю, x2 от того, что был до переаллокации.)
@@ -226,5 +174,3 @@ Destructor
 ## Исходный код
 
 https://github.com/popov-p/itmo-cxx-2024, папка Lab-2.
-
-## Недостатки написанной программы

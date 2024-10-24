@@ -46,15 +46,14 @@ void Generator::generate(const std::vector<std::string>& vartypes, const std::st
     std::vector<char> ops(_operations.begin(), _operations.end());
 
     file << "#include <iostream>\n\n";
-    file << "int main() {\n";
-
+    file << "void f() {\n";
     for(int i = 0; i < vartypes.size(); i++) {
         std::string vartype_i =  choose_random(vartypes);
         file << "  " << vartype_i << std::format(" var_{}", i) << " = ";
         if((vartype_i == "int") || (vartype_i == "long int")) {
             file << udis(rd) <<";\n";
         }
-        else {            
+        else {
             file << urealdis(rd) <<";\n";
         }
     }
@@ -69,6 +68,11 @@ void Generator::generate(const std::vector<std::string>& vartypes, const std::st
         expr << std::format(" var_{}", dist(gen));
         file << "  std::cout << \"Result of:\" << " << "\"" << expr.str() << "\"" << " << \" = \" << " << expr.str() << " << \"\\n\"" << ";\n";
     }
+    file << "}\n\n";
+
+    file << "int main() {\n";
+    file << "  f();\n";
+
     file << "  return 0;\n}\n";
 }
 

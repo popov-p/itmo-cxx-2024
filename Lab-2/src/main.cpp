@@ -20,9 +20,27 @@ int main() {
         Number()
     };
 
+    std::cout << "--------------------------------------------------------" << std::endl;
 
+    std::cout << "std::cout << numberArray[0] << std::endl;"<< std::endl;
+    std::cout << numberArray[0] << std::endl;
+    std::cout << "--------------------------------------------------------" << std::endl;
+
+    std::cout << "delete[] numberArray;" << std::endl;
     delete[] numberArray;
     std::cout << "--------------------------------------------------------" << std::endl;
+
+
+    std::cout << "createVector(size), processVector(...), deleteVector(...) (c-style)"<< std::endl;
+    Number* vec = createVector(size);
+    vec[0] = Number(10, "Ten");
+    vec[1] = Number(20, "Twenty");
+    vec[2] = Number(30, "Thirty");
+    vec[3] = Number(30, "Fourty");
+    processVector(vec, size);
+    deleteVector(vec);
+    std::cout << "--------------------------------------------------------" << std::endl;
+
 
     std::cout << "Number* dynamicNumber = new Number(200, \"two hundred\")" << std::endl;
     Number* dynamicNumber = new Number(200, "two hundred");

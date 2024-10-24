@@ -1,34 +1,19 @@
+#pragma once
+
 #include "number.h"
 #include <vector>
 
-Number processVal(Number num) {
-    num.print();
-    return num;
-}
+Number processVal(Number num);
 
-Number& processRef(Number& num) {
-    num.print();
-    return num;
-}
+Number& processRef(Number& num);
 
 
-void processVector(std::vector<Number>& numbers) {
-    for (Number& num : numbers) {
-        num.print();
-    }
-}
+void processVector(std::vector<Number>& numbers);
 
-std::vector<Number> createVector() {
-    std::vector<Number> vec;
-    vec.push_back(Number(1, "one"));
-    std::cout << "---\n" << std::flush;
-    vec.push_back(Number(2, "two"));
-    std::cout << "---\n" << std::flush;
-    vec.push_back(Number(3, "three"));
-    std::cout << "---\n" << std::flush;
-    vec.push_back(Number(4, "four"));
-    std::cout << "---\n" << std::flush;
-    vec.push_back(Number(5, "five"));
-    std::cout << "---\n" << std::flush;
-    return vec;
-}
+std::vector<Number> createVector();
+
+Number* createVector(int size);
+
+void processVector(Number* vec, int size);
+
+void deleteVector(Number* vec);

@@ -65,12 +65,12 @@ void step6(std::list<Number>& l1) {
     Number average = sum / l1.size();
     std::vector<Number> vec(l1.begin(), l1.end());
 
-    auto partition_point = std::partition(vec.begin(), vec.end(), // NOLINT
-                                          [average](const Number& num) {
-                                              return num > average;
-                                          });
+    //auto partition_point = std::partition(vec.begin(), vec.end(), // NOLINT
+    //                                      [average](const Number& num) {
+    //                                          return num > average;
+    //                                      });
 
-    /* Заметим, что если в п. 3 сразу сделать "правильное" копирование при помощи std:back_indserter(list1),
+    /* Заметим, что если в п. 3 сразу сделать "правильное" копирование при помощи std:back_inserter(list1),
      * то п.6 выполняется уже автоматически.
      * Для "демонстрации навыков работы с stl" я посчитал среднее значение и определил операторы >, /,
      * однако этого можно было вовсе не делать.

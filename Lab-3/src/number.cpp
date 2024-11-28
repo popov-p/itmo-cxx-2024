@@ -24,13 +24,14 @@ void Number::print() const {
 
 
 std::ostream& operator<<(std::ostream& os, const Number& number) {
+    os << "Value: " << number.value << ", Text: " << number.text;
     return os;
 }
 
 std::ostream& operator<<(std::ostream& os, Number&& number) {
+    os << "Value: " << number.value << ", Text: " << number.text;
     return os;
 }
-
 bool operator<(const Number& lhs, const Number& rhs) {
     return lhs.value < rhs.value;
 }

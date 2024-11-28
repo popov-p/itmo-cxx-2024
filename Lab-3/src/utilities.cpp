@@ -1,9 +1,4 @@
-#pragma once
-
-#include "number.h"
-#include <string>
-#include <vector>
-#include <list>
+#include "utilities.h"
 #include <algorithm>
 #include <numeric>
 
@@ -21,7 +16,6 @@ std::string generateRandomString(size_t length) {
 
     return random_string;
 }
-
 
 std::vector<Number> step1(const size_t& vector_size) {
     std::vector<Number> v1;
@@ -60,7 +54,6 @@ std::pair<std::list<Number>, size_t> step4(std::vector<Number>& v2) {
 
     return {list2, n};
 }
-
 void step5(std::pair<std::vector<Number>, size_t> p1,
            std::pair<std::vector<Number>, size_t> p2) {
     p1.first.erase(p1.first.begin(), p1.first.begin() + p1.second);
@@ -103,7 +96,6 @@ std::vector<Number> step8(std::vector<Number>& v1, std::vector<Number>& v2) {
 
     return v3;
 }
-
 
 std::list<std::pair<Number, Number>> step9(const std::list<Number>& list1, const std::list<Number>& list2) {
     auto list1_copy = list1;

@@ -1,5 +1,5 @@
 #include "number.h"
-#include "utils.h"
+#include "utilities.h"
 #include <ctime>
 
 int main () {
@@ -22,9 +22,6 @@ int main () {
     step8(v1, v2);
     auto l3 = step9(l1_pair.first, l2_pair.first);
     auto l3_ver3 = step10(l1_pair.first, l2_pair.first);
-
-    // for (const auto& el : l1_pair.first)
-    //     el.print();
 
     return 0;
 }

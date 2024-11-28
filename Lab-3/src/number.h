@@ -9,7 +9,6 @@ public:
     Number(int val, const char* input);
     Number(const Number& other);
     Number& operator=(const Number& other) {
-        //std::cout << "Assignment operator (copy)" << std::endl;
         if (this == &other) {
             return *this;
         }
@@ -23,11 +22,9 @@ public:
         return *this;
     }
     Number(Number&& other) noexcept : value(other.value), text(other.text) {
-        //std::cout << "Move constructor" << std::endl;
         other.text = nullptr;
     }
     Number& operator=(Number&& other) noexcept {
-        //std::cout << "Assignment operator (move)" << std::endl;
         if (this == &other) {
             return *this;
         }

@@ -20,7 +20,7 @@ std::string generateRandomString(size_t length) {
 std::vector<Number> step1(const size_t& vector_size) {
     std::vector<Number> v1;
     for (size_t i = 0; i < vector_size; ++i) {
-        v1.emplace_back(std::rand() % 1000, generateRandomString(5).c_str());
+        v1.emplace_back(std::rand() % 1001, generateRandomString(5).c_str());
     }
     return v1;
 }
@@ -54,6 +54,7 @@ std::pair<std::list<Number>, size_t> step4(std::vector<Number>& v2) {
 
     return {list2, n};
 }
+
 void step5(std::pair<std::vector<Number>, size_t> p1,
            std::pair<std::vector<Number>, size_t> p2) {
     p1.first.erase(p1.first.begin(), p1.first.begin() + p1.second);
@@ -77,8 +78,8 @@ void step6(std::list<Number>& l1) {
     */
 }
 
-void step7(std::list<Number>& list2) {
-    list2.remove_if([](const Number& num) {
+void step7(std::list<Number>& l2) {
+    l2.remove_if([](const Number& num) {
         return num % 2 != 0;
     });
 }
@@ -97,31 +98,31 @@ std::vector<Number> step8(std::vector<Number>& v1, std::vector<Number>& v2) {
     return v3;
 }
 
-std::list<std::pair<Number, Number>> step9(const std::list<Number>& list1, const std::list<Number>& list2) {
-    auto list1_copy = list1;
-    auto list2_copy = list2;
+std::list<std::pair<Number, Number>> step9(const std::list<Number>& l1, const std::list<Number>& l2) {
+    auto l1_copy = l1;
+    auto l2_copy = l2;
 
-    size_t diff = std::abs(static_cast<int>(list1_copy.size()) - static_cast<int>(list2_copy.size()));
+    size_t diff = std::abs(static_cast<int>(l1_copy.size()) - static_cast<int>(l2_copy.size()));
 
-    if (list1_copy.size() > list2_copy.size()) {
-        auto it = list1_copy.begin();
+    if (l1_copy.size() > l2_copy.size()) {
+        auto it = l1_copy.begin();
         std::advance(it, diff);
-        list1_copy.erase(list1_copy.begin(), it);
-    } else if (list2_copy.size() > list1_copy.size()) {
-        auto it = list2_copy.begin();
+        l1_copy.erase(l1_copy.begin(), it);
+    } else if (l2_copy.size() > l1_copy.size()) {
+        auto it = l2_copy.begin();
         std::advance(it, diff);
-        list2_copy.erase(list2_copy.begin(), it);
+        l2_copy.erase(l2_copy.begin(), it);
     }
 
-    std::list<std::pair<Number, Number>> list3;
+    std::list<std::pair<Number, Number>> l3;
 
-    std::transform(list1_copy.begin(), list1_copy.end(),
-                   list2_copy.begin(), std::back_inserter(list3),
+    std::transform(l1_copy.begin(), l1_copy.end(),
+                   l2_copy.begin(), std::back_inserter(l3),
                    [](const Number& n1, const Number& n2) {
                        return std::make_pair(n1, n2);
                    });
 
-    return list3;
+    return l3;
 }
 
 std::vector<std::pair<Number, Number>> step10(std::list<Number>& l1, std::list<Number>& l2) {

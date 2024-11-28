@@ -13,13 +13,13 @@ file(GLOB SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# target_compile_options(${PROJECT_NAME} PRIVATE
-#     -DNDEBUG
-#     -Wall -Wextra -Wpedantic -Werror
-#     -g
-#     -fsanitize=address,undefined,leak
-# )
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -DNDEBUG
+    -Wall -Wextra -Wpedantic -Werror
+    -g
+    -fsanitize=address,undefined,leak
+)
 
-# target_link_options(${PROJECT_NAME} PRIVATE
-#     -fsanitize=address,undefined,leak
-# )
+target_link_options(${PROJECT_NAME} PRIVATE
+    -fsanitize=address,undefined,leak
+)

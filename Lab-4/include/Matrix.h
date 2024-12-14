@@ -108,6 +108,19 @@ public:
     return result;
   }
 
+  static Matrix zeros(size_t size) {
+    Matrix result;
+
+    for (size_t i = 0; i <= size; ++i) {
+      for (size_t j = 0; j <= size; ++j) {
+        result.set(i, j, 0);
+      }
+    }
+
+    return result;
+  }
+
+
   Matrix transpose() const {
     Matrix result;
     for (const auto& [position, value] : sortedData_) {
@@ -123,6 +136,26 @@ public:
     }
     return result;
   }
+
+  Matrix operator-(const Matrix& other) const {
+    if (this->maxRow_ != other.maxRow_ || this->maxCol_ != other.maxCol_) {
+      throw std::invalid_argument("Matrices must have the same dimensions for subtraction.");
+    }
+
+    Matrix result;
+    for (const auto& [position, value] : sortedData_) {
+      result.set(position.first, position.second, value - other(position.first, position.second));
+    }
+
+    for (const auto& [position, value] : other.sortedData_) {
+      if (result.data_.find(position) == result.data_.end()) {
+        result.set(position.first, position.second, -value);
+      }
+    }
+
+    return result;
+  }
+
 
   Vector<T> operator*(const Vector<T>& vec) const {
     Vector<T> result;
@@ -188,6 +221,20 @@ public:
     }
     return result;
   }
+  bool operator==(const Matrix<T>& other) const {
+    if (this->maxRow_ != other.maxRow_ || this->maxCol_ != other.maxCol_) {
+      return false;
+    }
+
+    for (const auto& [position, value] : this->sortedData_) {
+      if (other.sortedData_.find(position) == other.sortedData_.end() || other(position.first, position.second) != value) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
 
   Matrix power(int exp) const {
     if(!isSquare())
@@ -205,11 +252,52 @@ public:
     return result;
   }
 
+  Matrix log(int approxOrder = 100) {
+    if (!isSquare()) {
+      throw std::invalid_argument("Matrix must be square to compute the logarithm.");
+    }
+
+    Matrix I = Matrix::identity(maxRow_);
+    if (*this == I) {
+      return Matrix::zeros(maxRow_);
+    }
+
+    if (frobeniusNorm(*this) >= 1)
+      throw std::invalid_argument("Frobenius matrix norm must be less than 1.");
+
+    Matrix A_minus_I = *this - I;
+    Matrix result = Matrix::zeros(maxRow_);
+    Matrix term = A_minus_I;
+
+    for (int n = 1; n <= approxOrder; ++n) {
+      if (n > 1) {
+        term = term * A_minus_I;
+      }
+      if (n % 2 == 0) {
+        result = result - term / static_cast<T>(n);
+      } else {
+        result = result + term / static_cast<T>(n);
+      }
+    }
+
+    return result;
+  }
+
+  double frobeniusNorm(const Matrix& matrix) {
+    double norm = 0.0;
+    for (size_t i = 0; i <= matrix.maxRow_; ++i) {
+      for (size_t j = 0; j <= matrix.maxCol_; ++j) {
+        norm += std::pow(std::abs(matrix(i, j)), 2);
+      }
+    }
+    return std::sqrt(norm);
+  }
+
   Matrix exp(int approxOrder = 100) const {
     if(!isSquare())
       throw std::invalid_argument("Matrix must be square to compute the exponential.");
 
-            // exp(A) = I + A + A^2/2! + A^3/3! + ...
+    // exp(A) = I + A + A^2/2! + A^3/3! + ...
 
     Matrix<T> result = Matrix::identity(maxRow_);
 

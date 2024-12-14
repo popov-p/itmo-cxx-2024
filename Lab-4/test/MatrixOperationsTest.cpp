@@ -278,6 +278,40 @@ TEST(MatrixExpTest, OneByOneMatrixExp) {
   EXPECT_NEAR(result(0, 0), exp(2), 0.1);
 }
 
+TEST(MatrixLogTest, LogOfIdentityMatrix) {
+  Matrix<double> A;
+  A.set(0, 0, 1);
+  A.set(1, 1, 1);
+
+  Matrix<double> logA = A.log();
+
+  EXPECT_EQ(logA(0, 0), 0);
+  EXPECT_EQ(logA(1, 1), 0);
+}
+
+TEST(MatrixLogTest, LogOfMatrixWithExpectedValues) {
+  Matrix<double> A;
+  A.set(0, 0, 0.5);
+  A.set(0, 1, 0.2);
+  A.set(1, 0, 0.1);
+  A.set(1, 1, 0.4);
+
+  Matrix<double> logA = A.log();
+
+  EXPECT_NEAR(logA(0, 0), -0.741875, 1e-6);
+  EXPECT_NEAR(logA(0, 1),  0.462098, 1e-6);
+  EXPECT_NEAR(logA(1, 0),  0.231049, 1e-6);
+  EXPECT_NEAR(logA(1, 1), -0.972924, 1e-6);
+}
+
+TEST(MatrixLogTest, LogOfNonSquareMatrixThrowsException) {
+  Matrix<double> A;
+  A.set(0, 0, 1);
+  A.set(0, 1, 2);
+
+  EXPECT_THROW(A.log(), std::invalid_argument);
+}
+
 // TEST(MatrixTest, MatrixInverse) {
 //   Matrix<int> mat;
 //   mat.set(0, 0, 1);

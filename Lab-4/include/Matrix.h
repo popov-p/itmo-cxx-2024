@@ -160,16 +160,35 @@ public:
 
 
     Matrix power(int exp) const {
-        if (sortedData_.size() != sortedData_.count({0, 0})) {
+        size_t maxRow = 0;
+        size_t maxCol = 0;
+
+        for (const auto& [position, value] : sortedData_) {
+            maxRow = std::max(maxRow, position.first);
+            maxCol = std::max(maxCol, position.second);
+        }
+
+        if (maxRow != maxCol) {
             throw std::invalid_argument("Matrix must be square.");
         }
 
         Matrix result = *this;
+
+        if (exp == 0) {
+            Matrix identity;
+            for (size_t i = 0; i <= maxRow; ++i) {
+                identity.set(i, i, T(1));
+            }
+            return identity;
+        }
+
         for (int i = 1; i < exp; ++i) {
             result = result * *this;
         }
+
         return result;
     }
+
 
     Matrix inverse() const {
         if (sortedData_.size() != sortedData_.count({0, 0})) {

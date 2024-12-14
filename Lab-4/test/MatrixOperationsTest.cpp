@@ -128,19 +128,85 @@ TEST(MatrixTest, MatrixMultiplicationInvalid) {
     }, std::runtime_error);
 }
 
-TEST(MatrixTest, MatrixPower) {
-    Matrix<int> mat;
-    mat.set(0, 0, 2);
-    mat.set(0, 1, 1);
-    mat.set(1, 0, 1);
-    mat.set(1, 1, 2);
+TEST(MatrixTest, MatrixPowerValid) {
+    Matrix<int> A;
+    A.set(0, 0, 1);
+    A.set(0, 1, 2);
+    A.set(1, 0, 3);
+    A.set(1, 1, 4);
 
-    Matrix<int> result = mat.power(2);  // Ожидаем матрицу (2 1; 1 2) * (2 1; 1 2)
-    EXPECT_EQ(result(0, 0), 5);  // 2*2 + 1*1 = 5
-    EXPECT_EQ(result(0, 1), 4);  // 2*1 + 1*2 = 4
-    EXPECT_EQ(result(1, 0), 4);  // 1*2 + 2*1 = 4
-    EXPECT_EQ(result(1, 1), 5);  // 1*1 + 2*2 = 5
+    Matrix<int> expected;
+    expected.set(0, 0, 7);  // 1*1 + 2*3
+    expected.set(0, 1, 10); // 1*2 + 2*4
+    expected.set(1, 0, 15); // 3*1 + 4*3
+    expected.set(1, 1, 22); // 3*2 + 4*4
+
+    Matrix<int> result = A.power(2);
+
+
+    for (const auto& [position, value] : expected) {
+        ASSERT_EQ(result(position.first, position.second), value);
+    }
 }
+
+TEST(MatrixTest, MatrixPowerInvalid) {
+    Matrix<int> A;
+    A.set(0, 0, 1);
+    A.set(0, 1, 2);
+    A.set(0, 2, 3);
+    A.set(1, 0, 4);
+
+    EXPECT_THROW({
+        try {
+            A.power(2);
+        } catch (const std::invalid_argument& e) {
+            EXPECT_STREQ(e.what(), "Matrix must be square.");
+            throw;
+        }
+    }, std::invalid_argument);
+}
+
+
+TEST(MatrixTest, MatrixPowerZero) {
+    Matrix<int> A;
+    A.set(0, 0, 1);
+    A.set(0, 1, 2);
+    A.set(1, 0, 3);
+    A.set(1, 1, 4);
+
+    Matrix<int> expected;
+    expected.set(0, 0, 1);
+    expected.set(0, 1, 0);
+    expected.set(1, 1, 1);
+    expected.set(1, 0, 0);
+
+    Matrix<int> result = A.power(0);
+
+    for (const auto& [position, value] : expected) {
+        ASSERT_EQ(result(position.first, position.second), value);
+    }
+}
+
+TEST(MatrixTest, MatrixPowerOne) {
+    Matrix<int> A;
+    A.set(0, 0, 1);
+    A.set(0, 1, 2);
+    A.set(1, 0, 3);
+    A.set(1, 1, 4);
+
+    Matrix<int> expected;
+    expected.set(0, 0, 1);
+    expected.set(0, 1, 2);
+    expected.set(1, 0, 3);
+    expected.set(1, 1, 4);
+
+    Matrix<int> result = A.power(1);
+
+    for (const auto& [position, value] : expected) {
+        ASSERT_EQ(result(position.first, position.second), value);
+    }
+}
+
 
 TEST(MatrixTest, MatrixInverse) {
     Matrix<int> mat;

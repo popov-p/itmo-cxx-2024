@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21.0)
 
-project(Lab-3 VERSION 1.0 LANGUAGES CXX)
+project(Lab-4 VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,15 +11,15 @@ file(GLOB SOURCES
     src/*.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+file(GLOB HEADERS
+    include/*.cpp
+    include/*.h
+)
+set(LIB_NAME "${PROJECT_NAME}-lib")
+message(STATUS "Sources: ${SOURCES},
+                Headers: ${HEADERS}")
 
-# target_compile_options(${PROJECT_NAME} PRIVATE
-#     -DNDEBUG
-#     -Wall -Wextra -Wpedantic -Werror
-#     -g
-#     -fsanitize=address,undefined,leak
-# )
-#
-# target_link_options(${PROJECT_NAME} PRIVATE
-#     -fsanitize=address,undefined,leak
-# )
+enable_testing()
+add_library(${LIB_NAME} ${SOURCES})
+add_subdirectory(test)
+

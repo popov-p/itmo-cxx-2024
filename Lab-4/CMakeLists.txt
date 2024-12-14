@@ -21,5 +21,6 @@ message(STATUS "Sources: ${SOURCES},
 
 enable_testing()
 add_library(${LIB_NAME} ${SOURCES})
+target_include_directories(${LIB_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
 add_subdirectory(test)
 

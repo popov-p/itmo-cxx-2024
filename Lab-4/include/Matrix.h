@@ -27,7 +27,6 @@ class Matrix {
     void eraseFromSortedData(const Position& pos) {
         sortedData_.erase(pos);
     }
-
 public:
     Matrix() = default;
 
@@ -157,6 +156,26 @@ public:
         return result;
     }
 
+    Matrix operator*(const T& scalar) const {
+        Matrix result;
+        for (const auto& [position, value] : sortedData_) {
+            result.set(position.first, position.second, value * scalar);
+        }
+        return result;
+    }
+
+    Matrix operator/(const T& scalar) const {
+        if (scalar == T(0)) {
+            throw std::invalid_argument("Cannot divide by zero.");
+        }
+
+        Matrix result;
+        for (const auto& [position, value] : sortedData_) {
+            result.set(position.first, position.second, value / scalar);
+        }
+        return result;
+    }
+
 
 
     Matrix power(int exp) const {
@@ -184,6 +203,43 @@ public:
 
         for (int i = 1; i < exp; ++i) {
             result = result * *this;
+        }
+
+        return result;
+    }
+
+    Matrix exp() const {
+        size_t maxRow = 0;
+        size_t maxCol = 0;
+        for (const auto& [position, value] : sortedData_) {
+            maxRow = std::max(maxRow, position.first);
+            maxCol = std::max(maxCol, position.second);
+        }
+
+        if (maxRow != maxCol) {
+            throw std::invalid_argument("Matrix must be square to compute the exponential.");
+        }
+
+        // exp(A) = I + A + A^2/2! + A^3/3! + ...
+
+        Matrix<T> result;
+
+        for (size_t i = 0; i <= maxRow; ++i) {
+            for (size_t j = 0; j <= maxCol; ++j) {
+                result.set(i, j, (i == j) ? 1 : 0);
+            }
+        }
+
+        Matrix<T> term = *this;
+        result = result + term;
+
+        size_t maxIterations = 10;
+
+        for (size_t n = 2; n < maxIterations; ++n) {
+            term = term * *this;
+            term = term / static_cast<T>(n);
+
+            result = result + term;
         }
 
         return result;

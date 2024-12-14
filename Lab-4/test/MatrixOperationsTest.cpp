@@ -207,6 +207,83 @@ TEST(MatrixTest, MatrixPowerOne) {
     }
 }
 
+// Тест для матрицы, которая является квадратной
+TEST(MatrixExpTest, SquareMatrixExp) {
+    Matrix<double> mat;
+
+    // Инициализация квадратной матрицы 2x2
+    mat.set(0, 0, 1);
+    mat.set(0, 1, 1);
+    mat.set(1, 0, 0);
+    mat.set(1, 1, 1);
+
+    // Проверка экспоненты матрицы
+    Matrix<double> result = mat.exp();
+
+    // Результат экспоненты матрицы должен быть приближенно равен (с учетом погрешности)
+    // Например, exp(A) для определенной матрицы можно сравнивать с известным значением
+    // Поскольку точное значение для конкретной матрицы сложно получить, допустим погрешность.
+
+    // Здесь будет примерная проверка значений, вы должны вычислить правильные значения вручную или через другой метод.
+    // Для демонстрации теста в данном контексте оставим базовые проверки.
+
+    EXPECT_NEAR(result(0, 0), 2.718, 0.001);
+    EXPECT_NEAR(result(0, 1), 2.718, 0.001);
+    EXPECT_NEAR(result(1, 0), 0, 0.1);
+    EXPECT_NEAR(result(1, 1), 2.718, 0.001);
+}
+
+// Тест для матрицы, которая не является квадратной (должно выбросить исключение)
+TEST(MatrixExpTest, NonSquareMatrixExp) {
+    Matrix<double> mat;
+
+    // Инициализация неквадратной матрицы 2x3
+    mat.set(0, 0, 1);
+    mat.set(0, 1, 2);
+    mat.set(0, 2, 3);
+    mat.set(1, 0, 4);
+    mat.set(1, 1, 5);
+    mat.set(1, 2, 6);
+
+    // Ожидаем, что при попытке вычислить экспоненту будет выброшено исключение
+    EXPECT_THROW(mat.exp(), std::invalid_argument);
+}
+
+// Тест для квадратной матрицы с нулевыми элементами
+TEST(MatrixExpTest, ZeroMatrixExp) {
+    Matrix<double> mat;
+
+    // Инициализация матрицы 2x2 с нулевыми элементами
+    mat.set(0, 0, 0);
+    mat.set(0, 1, 0);
+    mat.set(1, 0, 0);
+    mat.set(1, 1, 0);
+
+    // Экспонента нулевой матрицы должна быть единичной матрицей
+    Matrix<double> result = mat.exp();
+
+    EXPECT_EQ(result(0, 0), 1);
+    EXPECT_EQ(result(0, 1), 0);
+    EXPECT_EQ(result(1, 0), 0);
+    EXPECT_EQ(result(1, 1), 1);
+}
+
+// Тест для матрицы 1x1
+TEST(MatrixExpTest, OneByOneMatrixExp) {
+    Matrix<double> mat;
+
+    // Инициализация матрицы 1x1
+    mat.set(0, 0, 2);
+
+    // Экспонента матрицы 1x1: exp(2) == e^2
+    Matrix<double> result = mat.exp();
+
+    // Сравниваем с известным значением exp(2) (например, используя стандартный exp)
+    EXPECT_NEAR(result(0, 0), exp(2), 0.1);
+}
+
+
+
 
 TEST(MatrixTest, MatrixInverse) {
     Matrix<int> mat;

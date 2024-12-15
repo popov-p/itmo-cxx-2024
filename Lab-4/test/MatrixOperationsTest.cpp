@@ -312,13 +312,73 @@ TEST(MatrixLogTest, LogOfNonSquareMatrixThrowsException) {
   EXPECT_THROW(A.log(), std::invalid_argument);
 }
 
-// TEST(MatrixTest, MatrixInverse) {
-//   Matrix<int> mat;
-//   mat.set(0, 0, 1);
-//   mat.set(0, 1, 2);
-//   mat.set(1, 0, 3);
-//   mat.set(1, 1, 4);
+TEST(MatrixPowTest, IdentityMatrix) {
+  Matrix identity = Matrix<double>::identity(3);
 
-//   EXPECT_THROW(mat.inverse(), std::runtime_error);
+  Matrix result1 = identity.pow(2.5);
+  Matrix result2 = identity.pow(-1.0);
+
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      if (i == j) {
+        EXPECT_DOUBLE_EQ(result1(i, j), 1.0);
+        EXPECT_DOUBLE_EQ(result2(i, j), 1.0);
+      } else {
+        EXPECT_DOUBLE_EQ(result1(i, j), 0.0);
+        EXPECT_DOUBLE_EQ(result2(i, j), 0.0);
+      }
+    }
+  }
+}
+
+// TEST(MatrixPowTest, DiagonalMatrix) {
+//   Matrix<double> diagonal;
+//   diagonal.set(0, 0, 0.4);
+//   diagonal.set(1, 1, 0.7);
+//   diagonal.set(2, 2, 0.9);
+
+//   Matrix<double> expected;
+//   expected.set(0, 0std::pow(0.4, 0.5);
+//   expected(1, 1) = std::pow(0.7, 0.5);
+//   expected(2, 2) = std::pow(0.9, 0.5);
+
+//   EXPECT_TRUE(diagonal.pow(0.5).isApprox(expected));
 // }
+
+TEST(MatrixPowTest, GeneralCase) {
+  Matrix<double> A;
+  A.set(0, 0, 0.2);
+  A.set(0, 1, 0.1);
+  A.set(1, 0, 0.4);
+  A.set(1, 1, 0.5);
+
+  Matrix<double> expected;
+  expected.set(0, 0, 0.407902);
+  expected.set(0, 1, 0.0916738);
+  expected.set(1, 0, 0.366695);
+  expected.set(1, 1, 0.682923);
+
+  Matrix<double> result = A.pow(0.5);
+  for (int i = 0; i < 2; ++i) {
+    for (int j = 0; j < 2; ++j) {
+      EXPECT_NEAR(result(i, j), expected(i, j), 1e-3);
+    }
+  }
+}
+
+
+// TEST(MatrixPowTest, InvalidCases) {
+//   // Невырожденная матрица
+//   Matrix singular(2, 2);
+//   singular(0, 0) = 0; singular(0, 1) = 0;
+//   singular(1, 0) = 0; singular(1, 1) = 0;
+
+//           // Ожидаем исключение для невырожденной матрицы
+//   EXPECT_THROW(singular.pow(0.5), std::invalid_argument);
+
+//           // Ожидаем исключение для неквадратной матрицы
+//   Matrix nonSquare(2, 3);
+//   EXPECT_THROW(nonSquare.pow(2.0), std::invalid_argument);
+// }
+
 

@@ -252,6 +252,19 @@ public:
     return result;
   }
 
+  Matrix pow(double p, int approxOrder = 100) {
+    if (!isSquare()) {
+      throw std::invalid_argument("Matrix must be square to compute power.");
+    }
+
+    Matrix logA = log(approxOrder);
+
+    Matrix pLogA = logA * p;
+
+    return pLogA.exp(approxOrder);
+  }
+
+
   Matrix log(int approxOrder = 100) {
     if (!isSquare()) {
       throw std::invalid_argument("Matrix must be square to compute the logarithm.");

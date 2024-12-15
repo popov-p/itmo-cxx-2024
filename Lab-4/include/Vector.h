@@ -71,7 +71,7 @@ public:
 
   Vector operator-() const {
     Vector result;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result.set(index, -value);
     }
     return result;
@@ -83,10 +83,10 @@ public:
     const Vector* base = (this->lastIndex_ >= other.lastIndex_) ? this : &other;
     const Vector* secondary = (this->lastIndex_ < other.lastIndex_) ? this : &other;
 
-    for (const auto& [index, value] : base->sortedData_)
+    for (const auto& [index, value] : base->data_)
       result.set(index, value);
 
-    for (const auto& [index, value] : secondary->sortedData_)
+    for (const auto& [index, value] : secondary->data_)
       result.set(index, result[index] + value);
 
     result.lastIndex_ = base->lastIndex_;
@@ -96,7 +96,7 @@ public:
 
   T dot(const Vector& other) const {
     T result = 0;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result += value * other[index];
     }
     return result;
@@ -104,7 +104,7 @@ public:
 
   Vector operator+(const T& scalar) const {
     Vector result;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result.set(index, value + scalar);
     }
     return result;
@@ -112,7 +112,7 @@ public:
 
   Vector operator-(const T& scalar) const {
     Vector result;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result.set(index, value - scalar);
     }
     return result;
@@ -120,7 +120,7 @@ public:
 
   Vector operator*(const T& scalar) const {
     Vector result;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result.set(index, value * scalar);
     }
     return result;
@@ -128,7 +128,7 @@ public:
 
   Vector operator/(const T& scalar) const {
     Vector result;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result.set(index, value / scalar);
     }
     return result;
@@ -136,7 +136,7 @@ public:
 
   Vector pow(const T& exponent) const {
     Vector result;
-    for (const auto& [index, value] : sortedData_) {
+    for (const auto& [index, value] : data_) {
       result.set(index, std::pow(value, exponent));
     }
     return result;

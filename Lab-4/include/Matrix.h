@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <ostream>
+#include <iostream>
 
 template <typename T>
 class Matrix {
@@ -310,7 +311,7 @@ public:
     if(!isSquare())
       throw std::invalid_argument("Matrix must be square to compute the exponential.");
 
-    // exp(A) = I + A + A^2/2! + A^3/3! + ...
+            // exp(A) = I + A + A^2/2! + A^3/3! + ...
 
     Matrix<T> result = Matrix::identity(maxRow_);
 
@@ -333,9 +334,72 @@ public:
   }
 
   Matrix inverse() const {
-    if (sortedData_.size() != sortedData_.count({0, 0})) {
+    if (!isSquare()) {
       throw std::invalid_argument("Matrix must be square.");
     }
-    throw std::runtime_error("Inverse function is not implemented.");
+
+    int rows = maxRow_ + 1;
+    int cols = maxCol_ + 1;
+
+    Matrix augmentedMatrix;
+    augmentedMatrix.maxRow_ = rows;
+    augmentedMatrix.maxCol_ = 2 * cols;
+
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < cols; ++j) {
+        augmentedMatrix.set(i, j, (*this)(i, j));
+        augmentedMatrix.set(i, j + cols, (i == j) ? 1.0 : 0.0);
+      }
+    }
+    std::cout << augmentedMatrix;
+
+    for (int i = 0; i < rows; ++i) {
+      int maxRow = i;
+      for (int j = i + 1; j < rows; ++j) {
+        if (std::abs(augmentedMatrix(i, j)) > std::abs(augmentedMatrix(maxRow, i))) {
+          maxRow = j;
+        }
+      }
+
+      if (maxRow != i) {
+        for (int j = 0; j < 2 * cols; ++j) {
+          double temp = augmentedMatrix(i, j);
+          augmentedMatrix.set(i, j, augmentedMatrix(maxRow, j));
+          augmentedMatrix.set(maxRow, j, temp);
+        }
+      }
+
+      double pivot = augmentedMatrix(i, i);
+      if (pivot == 0) {
+        throw std::runtime_error("Matrix is singular and cannot be inverted.");
+      }
+
+      for (int j = 0; j < 2 * cols; ++j) {
+        double value = augmentedMatrix(i, j) / pivot;
+        augmentedMatrix.set(i, j, value);
+      }
+
+      for (int j = 0; j < rows; ++j) {
+        if (i != j) {
+          double factor = augmentedMatrix(j, i);
+          for (int k = 0; k < 2 * cols; ++k) {
+            double value = augmentedMatrix(j, k) - factor * augmentedMatrix(i, k);
+            augmentedMatrix.set(j, k, value);
+          }
+        }
+      }
+    }
+
+    Matrix inverseMatrix;
+    for (int i = 0; i < rows; ++i) {
+      for (int j = 0; j < cols; ++j) {
+        double value = augmentedMatrix(i, j + cols);
+        inverseMatrix.set(i, j, value);
+      }
+    }
+
+    return inverseMatrix;
   }
+
+
 };

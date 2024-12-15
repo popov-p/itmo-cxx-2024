@@ -331,20 +331,6 @@ TEST(MatrixPowTest, IdentityMatrix) {
   }
 }
 
-// TEST(MatrixPowTest, DiagonalMatrix) {
-//   Matrix<double> diagonal;
-//   diagonal.set(0, 0, 0.4);
-//   diagonal.set(1, 1, 0.7);
-//   diagonal.set(2, 2, 0.9);
-
-//   Matrix<double> expected;
-//   expected.set(0, 0std::pow(0.4, 0.5);
-//   expected(1, 1) = std::pow(0.7, 0.5);
-//   expected(2, 2) = std::pow(0.9, 0.5);
-
-//   EXPECT_TRUE(diagonal.pow(0.5).isApprox(expected));
-// }
-
 TEST(MatrixPowTest, GeneralCase) {
   Matrix<double> A;
   A.set(0, 0, 0.2);
@@ -367,18 +353,28 @@ TEST(MatrixPowTest, GeneralCase) {
 }
 
 
-// TEST(MatrixPowTest, InvalidCases) {
-//   // Невырожденная матрица
-//   Matrix singular(2, 2);
-//   singular(0, 0) = 0; singular(0, 1) = 0;
-//   singular(1, 0) = 0; singular(1, 1) = 0;
+TEST(MatrixInverseTest, InverseOf2x2Matrix) {
+  Matrix<double> matrix2x2;
+  matrix2x2.set(0, 0, -4);
+  matrix2x2.set(0, 1, 3);
+  matrix2x2.set(1, 0, 2.5);
+  matrix2x2.set(1, 1, -1);
 
-//           // Ожидаем исключение для невырожденной матрицы
-//   EXPECT_THROW(singular.pow(0.5), std::invalid_argument);
+  Matrix<double> expected;
+  expected.set(0, 0, 0.285714);
+  expected.set(0, 1, 0.857143);
+  expected.set(1, 0, 0.714286);
+  expected.set(1, 1, 1.14286);
 
-//           // Ожидаем исключение для неквадратной матрицы
-//   Matrix nonSquare(2, 3);
-//   EXPECT_THROW(nonSquare.pow(2.0), std::invalid_argument);
-// }
+  Matrix<double> result = matrix2x2.inverse();
+
+  for (int i = 0; i < 2; ++i) {
+    for (int j = 0; j < 2; ++j) {
+      EXPECT_NEAR(result(i, j), expected(i, j), 1e-3);
+    }
+  }
+}
+
+
 
 

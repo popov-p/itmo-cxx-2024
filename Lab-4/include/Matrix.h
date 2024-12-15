@@ -130,6 +130,23 @@ public:
     return result;
   }
 
+  Matrix operator+(const T& scalar) const {
+    Matrix result;
+    for (const auto& [position, value] : sortedData_) {
+      result.set(position.first, position.second, value + scalar);
+    }
+    return result;
+  }
+
+  Matrix operator-(const T& scalar) const {
+    Matrix result;
+    for (const auto& [position, value] : sortedData_) {
+      result.set(position.first, position.second, value - scalar);
+    }
+    return result;
+  }
+
+
   Matrix operator+(const Matrix& other) const {
     Matrix result;
     for (const auto& [position, value] : sortedData_) {
@@ -156,7 +173,6 @@ public:
 
     return result;
   }
-
 
   Vector<T> operator*(const Vector<T>& vec) const {
     Vector<T> result;
@@ -222,6 +238,16 @@ public:
     }
     return result;
   }
+
+  Matrix operator^(const T& exponent) const {
+    Matrix result;
+    for (const auto& [position, value] : sortedData_) {
+      result.set(position.first, position.second, std::pow(value, exponent));
+    }
+    return result;
+  }
+
+
   bool operator==(const Matrix<T>& other) const {
     if (this->maxRow_ != other.maxRow_ || this->maxCol_ != other.maxCol_) {
       return false;
@@ -400,6 +426,5 @@ public:
 
     return inverseMatrix;
   }
-
 
 };

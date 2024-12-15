@@ -352,7 +352,6 @@ TEST(MatrixPowTest, GeneralCase) {
   }
 }
 
-
 TEST(MatrixInverseTest, InverseOf2x2Matrix) {
   Matrix<double> matrix2x2;
   matrix2x2.set(0, 0, -4);
@@ -375,6 +374,62 @@ TEST(MatrixInverseTest, InverseOf2x2Matrix) {
   }
 }
 
+TEST(MatrixTest, ElementwiseAdditionWithScalar) {
+  Matrix<int> mat;
+  mat.set(0, 0, 1);
+  mat.set(0, 1, 2);
+  mat.set(1, 0, 3);
+  mat.set(1, 1, 4);
 
+  Matrix<int> result = mat + 5;
 
+  EXPECT_EQ(result(0, 0), 6);
+  EXPECT_EQ(result(0, 1), 7);
+  EXPECT_EQ(result(1, 0), 8);
+  EXPECT_EQ(result(1, 1), 9);
+}
 
+TEST(MatrixTest, ElementwiseSubtractionWithScalar) {
+  Matrix<int> mat;
+  mat.set(0, 0, 5);
+  mat.set(0, 1, 6);
+  mat.set(1, 0, 7);
+  mat.set(1, 1, 8);
+
+  Matrix<int> result = mat - 3;
+
+  EXPECT_EQ(result(0, 0), 2);
+  EXPECT_EQ(result(0, 1), 3);
+  EXPECT_EQ(result(1, 0), 4);
+  EXPECT_EQ(result(1, 1), 5);
+}
+
+TEST(MatrixTest, ElementwiseMultiplicationWithScalar) {
+  Matrix<int> mat;
+  mat.set(0, 0, 2);
+  mat.set(0, 1, 3);
+  mat.set(1, 0, 4);
+  mat.set(1, 1, 5);
+
+  Matrix<int> result = mat * 2;
+
+  EXPECT_EQ(result(0, 0), 4);
+  EXPECT_EQ(result(0, 1), 6);
+  EXPECT_EQ(result(1, 0), 8);
+  EXPECT_EQ(result(1, 1), 10);
+}
+
+TEST(MatrixTest, ElementwiseExponentiationWithScalar) {
+  Matrix<int> mat;
+  mat.set(0, 0, 2);
+  mat.set(0, 1, 3);
+  mat.set(1, 0, 4);
+  mat.set(1, 1, 5);
+
+  Matrix<int> result = mat ^ 2;
+
+  EXPECT_EQ(result(0, 0), 4);  // 2^2 = 4
+  EXPECT_EQ(result(0, 1), 9);  // 3^2 = 9
+  EXPECT_EQ(result(1, 0), 16); // 4^2 = 16
+  EXPECT_EQ(result(1, 1), 25); // 5^2 = 25
+}
